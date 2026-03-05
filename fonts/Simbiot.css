@@ -1,0 +1,6 @@
+@font-face {
+    font-family: "Simbiot";
+    src: url("Simbiot.woff2") format("woff2"), url("Simbiot.woff") format("woff"), url("Simbiot.otf") format("opentype");
+    font-style: normal;
+    font-weight: 400;
+}
