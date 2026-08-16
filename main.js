@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { updateFavicon } from './favicon.js';
 
 const MONSTER_COLOR = 0x5a1888;
 const CONTRAST_COLOR = 0x00bb0a;
@@ -390,6 +391,7 @@ function animate() {
   blobGroup.position.y = BLOB_SCENE_OFFSET + Math.sin(time * 1.1) * 0.012;
 
   renderer.render(scene, camera);
+  updateFavicon({ time, smoothTarget, mouseX, mouseY });
   requestAnimationFrame(animate);
 }
 
