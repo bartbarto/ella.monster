@@ -5,17 +5,26 @@ const MONSTER_LIGHT = '#7a2ab0';
 const EYE_WHITE = '#f8f4ee';
 const PUPIL = '#111111';
 
+// Safari ignores runtime favicon changes; leave the static <link> alone.
+const supportsAnimatedFavicon = !(
+  /Safari/i.test(navigator.userAgent) &&
+  !/Chrome|Chromium|CriOS|Edg|OPR/i.test(navigator.userAgent)
+);
+
 const canvas = document.createElement('canvas');
 canvas.width = SIZE;
 canvas.height = SIZE;
 const ctx = canvas.getContext('2d');
 
-let link = document.querySelector("link[rel~='icon']");
-if (!link) {
-  link = document.createElement('link');
-  link.rel = 'icon';
-  link.type = 'image/png';
-  document.head.appendChild(link);
+let link = null;
+if (supportsAnimatedFavicon) {
+  link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    link.type = 'image/png';
+    document.head.appendChild(link);
+  }
 }
 
 function hash(n) {
@@ -28,9 +37,9 @@ function deform(ox, oy, leanX, leanY, time, heightNorm) {
 
   const lump =
     Math.sin(ox * 7 + oy * 5 + time * 0.4) *
-    Math.cos(oy * 6 + time * 0.3) *
-    0.55 *
-    anchor +
+      Math.cos(oy * 6 + time * 0.3) *
+      0.55 *
+      anchor +
     Math.sin(oy * 9) * 0.2 * anchor;
   const wobble = Math.sin(time * 1.4 + ox * 3) * 0.22 * anchor;
 
@@ -112,6 +121,8 @@ function drawEye(x, y, r, lookX, lookY) {
  * @param {{ time: number, smoothTarget: { x: number, y: number }, mouseX: number, mouseY: number }} state
  */
 export function updateFavicon(state) {
+  if (!supportsAnimatedFavicon) return;
+
   const { time, smoothTarget, mouseX, mouseY } = state;
 
   ctx.clearRect(0, 0, SIZE, SIZE);
